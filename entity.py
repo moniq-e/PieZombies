@@ -16,7 +16,7 @@ class Entity:
     def draw(self, screen, player, entities):
         if not self.rect.colliderect(player.rect):
             pos = kb(player, self, -1.5)
-            self.x = pos['x']
-            self.y = pos['y']
+            self.x = pos.x
+            self.y = pos.y
             self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(screen, self.color, self.rect)

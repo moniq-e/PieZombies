@@ -32,17 +32,19 @@ class Bullet:
         pygame.draw.rect(screen, self.color, self.rect)
 
 class Player:
-    def __init__(self, screen, width, height, color):
+    def __init__(self, screen, width, height, color, heal):
         self.x = screen.get_width() / 2
         self.y = screen.get_height() / 2
         self.width = width
         self.height = height
         self.color = color
+        self.heal = heal
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.bullets = []
         self.speed = 0.3
         self.score = 0
         self.life = 30
+        self.maxlife = 30
         self.face = 'right'
 
     def draw(self, screen, player, entities):

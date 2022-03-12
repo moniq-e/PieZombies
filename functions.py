@@ -1,4 +1,5 @@
 import math
+from playerClass import Initial
 
 def kb(one, two, force):
 	a = one.x
@@ -13,4 +14,4 @@ def kb(one, two, force):
 	x = c + (finalpos * (c - a))
 	y = d + (finalpos * (d - b))
 
-	return {'x': x, 'y': y}
+	return Initial(x, y)

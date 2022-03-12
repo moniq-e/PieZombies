@@ -1,3 +1,4 @@
+import math
 import pygame
 from sys import exit
 from functions import kb
@@ -10,9 +11,11 @@ screen = pygame.display.set_mode((900, 600))
 font = pygame.font.SysFont('calibri', 20)
 ADDENEMY = pygame.USEREVENT + 1
 BULLET = pygame.USEREVENT + 2
+HEAL = pygame.USEREVENT + 3
 pygame.time.set_timer(BULLET, 250)
 pygame.time.set_timer(ADDENEMY, 2000)
-player = playerClass.Player(screen, 20, 20, (255, 255, 255))
+pygame.time.set_timer(HEAL, 1000)
+player = playerClass.Player(screen, 20, 20, (255, 255, 255), 0.1)
 entities = []
 entities.append(player)
 clock = pygame.time.Clock()
@@ -30,8 +33,12 @@ while True:
             0, screen.get_height()), 20, 20, (44, 190, 200), 10, 0.1))
 
     player.move(screen, fix)
+
     if pygame.event.get(BULLET):
         player.shoot(fix)
+
+    if pygame.event.get(HEAL) and player.life < player.maxlife:
+        player.life += player.heal
 
     for e in entities:
         if not isinstance(e, playerClass.Player):
@@ -44,11 +51,12 @@ while True:
         for e in entities:
             if not isinstance(e, playerClass.Player):
                 if b.rect.colliderect(e.rect):
-                    e.life -= b.damage
-                    pos = kb(b.initial, e, 20)
-                    e.x = pos['x']
-                    e.y = pos['y']
-                    player.bullets.remove(b)
+                    if b in player.bullets:
+                        e.life -= b.damage
+                        pos = kb(b.initial, e, 20)
+                        e.x = pos.x
+                        e.y = pos.y
+                        player.bullets.remove(b)
         b.draw(screen)
 
     for i in entities:
@@ -59,5 +67,14 @@ while True:
             i.draw(screen, player, entities)
         else:
             entities.remove(i)
+            player.score += 1
+
+    lifetxt = f'Life: {math.floor(player.life * 10) / 10}'
+    life = font.render(lifetxt, True, (255, 255, 255))
+    screen.blit(life, ((screen.get_width()/2) - (len(lifetxt)*5), 5))
+
+    scoretxt = f'Score: {player.score}'
+    score = font.render(scoretxt, True, (255, 255, 255))
+    screen.blit(score, ((screen.get_width()/2) - (len(scoretxt) * 6), 30))
 
     pygame.display.update()
