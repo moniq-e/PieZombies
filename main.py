@@ -21,16 +21,15 @@ entities.append(player)
 clock = pygame.time.Clock()
 
 while True:
+    screen.fill((0, 0, 0))
     fix = clock.tick(60)
 
-    screen.fill((0, 0, 0))
     if pygame.event.get(pygame.QUIT):
         pygame.quit()
         exit()
 
     if pygame.event.get(ADDENEMY):
-        entities.append(entity.Entity(randint(0, screen.get_width()), randint(
-            0, screen.get_height()), 20, 20, (44, 190, 200), 10, 0.1))
+        entities.append(entity.Entity(randint(0, screen.get_width()), randint(0, screen.get_height()), 20, 20, (44, 190, 200), 10, 0.1))
 
     player.move(screen, fix)
 
